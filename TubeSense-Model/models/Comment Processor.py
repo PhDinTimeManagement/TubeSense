@@ -1,4 +1,6 @@
-import nltk, csv, re
+import nltk 
+import csv 
+import re
 from nltk.corpus import stopwords
 from nltk.probability import FreqDist
 
@@ -21,7 +23,7 @@ def cleanComments(comments):
     cleaned = []
     for comment in uniqueComments:
         regex = r"^[A-Za-z0-9.,;!?\'\"-_\s]+$"
-        if re.match(comment[0], regex) :
+        if re.match(regex, comment[0]) :
             cleaned.append(comment)
     return cleaned
 
@@ -34,17 +36,16 @@ def tokenizeComments(comments):
 
 def sanatizeComments(comments):
     
-    
     sanatizedComments = []
     stopWords = set(stopwords.words('english'))
     regex = r"^[A-Za-z]+$"
     for comment, likes, replies in comments :
         sanatizedComment = []
         for word in comment :
-            if re.match(word, regex) :
+            if re.match(regex, word) :
                 if word.lower() not in stopWords :
                     sanatizedComment.append(word)
-        sanatizedComments.append(sanatizedComment,likes, replies)
+        sanatizedComments.append((sanatizedComment,likes, replies))
     return sanatizedComments
 
 def transcriptProcessor(transcript, mode):
@@ -76,11 +77,14 @@ def wordScoring(comments, weightL, weightR):
     
     for comment, likes, replies in comments :
         for word in comment :
-            score = weightL * likes/maxLikes + weightR * replies/maxReplies
-            if word.lower() in words :
-                words[word.lower()] += score
-            else :
-                words[word.lower()] = score
+            regex = r'^[A-Za-z]+$'
+            if re.match(word, regex):
+            
+                score = weightL * likes/maxLikes + weightR * replies/maxReplies
+                if word.lower() in words :
+                    words[word.lower()] += score
+                else :
+                    words[word.lower()] = score
     return words
     
     
@@ -94,9 +98,16 @@ def main() :
    sentecneLengths = [len(pair[0]) for pair in tokenized]
    
    lenFreqDist = FreqDist(sentecneLengths)
+   print(lenFreqDist)
    
    
-   sanatized = sanatizeComments(tokenized)   
+   sanatized = sanatizeComments(tokenized)
+   scores = wordScoring(sanatized,.8, .4)
+   print(sanatized)
+   print(scores)   
+   
+if __name__ == "__main__":
+    main()
    
    
    
