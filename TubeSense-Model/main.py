@@ -163,13 +163,71 @@ def generate_sentence(sentence_length, representative_word, topic_word, tune):
     return final_sentence
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 if __name__ == "__main__":
-    # Example usage:
+    # Example usage
     examples = [
         (15, "focus", "presentation", "positive")
     ]
 
     for (length, rep_word, topic_word, tune) in examples:
-        sentence = generate_sentence(length, rep_word, topic_word, tune)
+        sentence = generate_sentence(length,
+                                     rep_word,
+                                     topic_word, tune)
         print(f"\n--- Example (len={length}, tune='{tune}') ---")
         print(sentence)
