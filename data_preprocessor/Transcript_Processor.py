@@ -2,18 +2,11 @@ import re
 from bs4 import BeautifulSoup
 
 class TranscriptProcessor:
-    """
-    Extract and clean transcript from raw transcript files.
-    """
     def __init__(self):
-        # Regex to strip bracketed timestamps or metadata
+        # Strip bracketed timestamps or metadata
         self.bracket_pattern = re.compile(r"\[.*?\]")
 
     def extract_transcript(self, raw_lines):
-        """
-        Given a list of lines from a raw transcript file, extract the real transcript
-        between the dashed separator and the 'DISCLAIMER:' marker.
-        """
         start_idx = None
         end_idx = None
         for i, line in enumerate(raw_lines):
@@ -30,24 +23,17 @@ class TranscriptProcessor:
         return raw_lines[start_idx:end_idx]
 
     def clean_transcript(self, lines):
-        """
-        Clean transcript lines: remove HTML tags, bracketed text, and normalize whitespace.
-        """
         # Join lines into a single string
         text = ' '.join(line.strip() for line in lines)
         # Strip HTML tags
         text = BeautifulSoup(text, 'html.parser').get_text(separator=' ')
-        # Remove bracketed timestamps/metadata
+        # Remove bracketed timestamps or metadata
         text = self.bracket_pattern.sub('', text)
         # Normalize whitespace
         text = re.sub(r"\s+", ' ', text).strip()
         return text
 
     def process_file(self, input_path: str, output_path: str):
-        """
-        Read a raw transcript text file, extract the transcript, clean it,
-        and write the cleaned text to an output file.
-        """
         with open(input_path, 'r', encoding='utf-8') as fin:
             raw_lines = fin.readlines()
 
