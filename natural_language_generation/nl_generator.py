@@ -2,10 +2,10 @@ import pandas as pd
 import ast  # to safely parse list strings
 
 def extract_comment_data(
-    sentiment_path="exploratory_data_analytics/sentiment_analysis/SA_res/comments_with_sentiment.csv",
-    length_dist_path="intermediate_output/from_CLD_res/comment_length_distribution.csv",
-    word_ranking_path="exploratory_data_analytics/representative_words/RW_res/complete_words_ranking.csv",
-    topic_summary_path="exploratory_data_analytics/topic_modeling/TM_res/topic_summary.csv"
+    sentiment_path="../exploratory_data_analytics/sentiment_analysis/SA_res/comments_with_sentiment.csv",
+    length_dist_path="../intermediate_output/from_CLD_res/comment_length_distribution.csv",
+    word_ranking_path="../exploratory_data_analytics/representative_words/RW_res/complete_words_ranking.csv",
+    topic_summary_path="../exploratory_data_analytics/topic_modeling/TM_res/topic_summary.csv"
 ):
     # Load data
     sentiment_df = pd.read_csv(sentiment_path)
