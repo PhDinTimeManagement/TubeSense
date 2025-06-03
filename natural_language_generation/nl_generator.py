@@ -1,11 +1,12 @@
 import pandas as pd
 import ast  # to safely parse list strings
 
+
 def extract_comment_data(
-    sentiment_path="../exploratory_data_analytics/sentiment_analysis/SA_res/comments_with_sentiment.csv",
-    length_dist_path="../intermediate_output/from_CLD_res/comment_length_distribution.csv",
-    word_ranking_path="../exploratory_data_analytics/representative_words/RW_res/complete_words_ranking.csv",
-    topic_summary_path="../exploratory_data_analytics/topic_modeling/TM_res/topic_summary.csv"
+        sentiment_path="exploratory_data_analytics/sentiment_analysis/SA_res/comments_with_sentiment.csv",
+        length_dist_path="intermediate_output/from_CLD_res/comment_length_distribution.csv",
+        word_ranking_path="exploratory_data_analytics/representative_words/RW_res/complete_words_ranking.csv",
+        topic_summary_path="exploratory_data_analytics/topic_modeling/TM_res/topic_summary.csv"
 ):
     # Load data
     sentiment_df = pd.read_csv(sentiment_path)
@@ -42,7 +43,7 @@ def extract_comment_data(
     # --- Extract Topics ---
     # Keep the top N topics with the most comments
     top_topic_rows = topic_df[topic_df["Topic"] != -1].sort_values("Count", ascending=False).head(5)
-    
+
     topics = []
     for row in top_topic_rows["Representation"]:
         try:
@@ -57,6 +58,7 @@ def extract_comment_data(
         "top_words": top_words,
         "topics": topics
     }
+
 
 def generate_gpt_prompt(comment_data):
     sentiment = comment_data["sentiment"]
@@ -73,7 +75,8 @@ Here is the extracted data from the comments section:
 - Most frequent words across all comments: {", ".join(top_words)}.
 - Dominant discussion topics extracted from clusters of related words: {", ".join(topics)}.
 
-Using this data, generate a one-paragraph, insightful and human-like summary that describes what the audience is likely reacting to or discussing in the video. Highlight any strong emotional reactions, repeated discussion themes, or notable patterns. Make sure the summary reads as if written by a human analyst, not a template.
+Using this data, generate a one-paragraph, insightful and human-like summary that describes what the audience is likely reacting to or discussing in the video. Highlight any strong emotional reactions, repeated discussion themes, or notable patterns. Make sure the summary reads as if written by a human analyst, not a template. 
+Avoid using this to summarize the video. Instead focus on what comments talked about and sentiment/common topics.
 
 """
     return prompt.strip()
@@ -96,7 +99,8 @@ def generate_template_based_summary(comment_data):
 
 
 def generate_refinement_prompt(raw_summary):
-     return "Here is a draft summary based on YouTube comments about a video: " + raw_summary + "Please rewrite this into a refined, fluent, and engaging paragraph that could appear in a report or presentation about the video. Make it sound professional yet natural, and ensure it highlights key emotional responses, discussion themes, and community interests reflected in the comment data." 
+    return "Here is a draft summary based on YouTube comments about a video: \n" + raw_summary + "\nPlease rewrite this into a refined, fluent, and engaging paragraph that could appear in a report or presentation about the video. Make it sound professional yet natural, and ensure it highlights key emotional responses, discussion themes, and community interests reflected in the comment data.\nAvoid using this to summarize the video. Instead focus on what comments talked about and sentiment/common topics."
+
 
 comment_dat = extract_comment_data()
 

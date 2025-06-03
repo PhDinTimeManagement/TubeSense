@@ -9,18 +9,8 @@ def evaluate_sentence(sentence):
     )
 
     user_prompt = f"""
-Please assess the following sentence on a scale from 1 to 10 in the following categories:
-1) Grammar/Spelling
-2) Fluency/Readability
-3) Logical Consistency (Does it make sense?)
-
-Sentence: "{sentence}"
-
-Provide:
-- A 1-10 rating (10 being excellent) for each category
-- A short rationale for each score
-- Then an overall average score.
-Finally, suggest one or two ways to improve it.
+You are tasked with evaluating a summary of a Youtube Video comment section. You must evaluate the summary on four metrics. Clarity, coherence, relevance, and substance. Give a score (1/5) on each of the metrics and give an explanation of how each score could be improved. The example summary will be given below.
+"{sentence}"
 """
 
     response = openai.ChatCompletion.create(
